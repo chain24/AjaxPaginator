@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Ajax分页显示数据</title>
+</head>
+<body>
+<div class="keyword">
+    <p>关键字：<input type="text" id="key"/></p>
+    <p>选择国家：</p>
+    <ul id="country">
+        <li><input type="checkbox" name="country[]" value="US"/>US</li>
+        <li><input type="checkbox" name="country[]" value="EN"/>EN</li>
+        <li><input type="checkbox" name="country[]" value="TRSASAWADF"/>TRSASAWADF</li>
+        <li><input type="checkbox" name="country[]" value="YTERTFGD"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TREXDFGDD"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="DDFGVCSF"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="RTRTRYHGNS"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="EOPYHMKLK"/>EOPYHMKLK</li>
+        <li><input type="checkbox" name="country[]" value="ED"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="ERERTET"/>ERERTET</li>
+        <li><input type="checkbox" name="country[]" value="UTYRRDDD"/>UTYRRDDD</li>
+        <li><input type="checkbox" name="country[]" value="URSERDFGDGD"/>URSERDFGDGD</li>
+        <li><input type="checkbox" name="country[]" value="EwWEWEERWR"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="EYTRDDSW"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="EERERE"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="RRRREDDD"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="FFFFGFGG"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="EDDFSFFF"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="DFGCFDS"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WEEDDD"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WWWEDXCF"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WEWSSD"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WQEAW"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="SWEED"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="Thaild"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="Chais"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TREED"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="RTRE"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="E#$"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TYTR"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WWW"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WWWW"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="RERW"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TRE"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="WW"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="RR"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TT"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="UU"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="OO"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="MM"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="NN"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="DD"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="VV"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="CC"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="PP"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="YY"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="ET"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="EY"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="EE"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="AA"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="ZZ"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="ZX"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TP"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="HY"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="RT"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="DF"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="CV"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="TR"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="UY"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="PB"/>ED</li>
+        <li><input type="checkbox" name="country[]" value="JS"/>JS</li>
+    </ul>
+    <input type="submit" value="查询" id="chaxun" />
+</div>
+<div id="list">
+    <ul></ul>
+</div>
+<div id="pagecount"></div>
+<table width="50%" border="1" cellpadding="0" cellspacing="0">
+    <tr>　
+        <td>连接名称</td>
+        <td>服务器</td>
+        <td>登录名</td>
+        <td>国家</td>
+    </tr>    　
+    <tbody id="bg"></tbody>
+</table>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script>
+    var curPage = 1;//当前页
+    var total,pageSize,totalPage,key,vals;
+    function getData(page){
+        var data = new Array();
+        data = getFormData();
+        $.ajax({
+            type: 'post',
+            url: 'dataList.php',
+            data:{'page':page,'formData':data},
+            dataType:'json',
+            beforeSend:function(){
+                $('#list ul').append("<li id='loading'>loading...</li>");
+            },
+            success:function(json){
+                $('#list ul').empty();
+                total = json.total;//共有多少条数据
+                pageSize = json.pageSize;//每页显示多少
+                curPage = page;//当前页码
+                totalPage = json.totalPage;//共有多少页
+                var li = '';
+                var list = json.list;//数据主体数组形式
+                $.each(list,function(index,array){
+                    li +="<tr><td>"+array['VpnName']+"</td><td>"+array['VpnServer']+"</td><td>"+array['VpnUser']+"</td><td>"+array['Country']+"</td></tr>";
+                })
+                $("#bg").html(li);
+            },
+            complete:function(){ //生成分页条
+                getPageBar();//当点击分页条中的分页链接时，调用getData(page)加载对应页码的数据。　　
+                $("#pagecount span a").on('click',function(){
+                    var rel = $(this).attr("rel");
+                    if(rel){
+                        getData(rel);
+                    }
+                });
+            },
+            error:function(){
+                alert("数据加载失败");
+            }
+        })
+    }
+    function getPageBar(){
+        //页码大于最大页数
+        if(curPage>totalPage) curPage=totalPage;//当前页就为尾页
+        //页码小于1
+        if(curPage<=1) curPage=1;
+        var pageStr = "<span>共"+total+"条</span><span>"+curPage
+            +"/"+totalPage+"</span>";
+        //如果是第一页
+        if(curPage==1){
+            pageStr += "<span>首页</span><span>上一页</span>";
+        }else{
+            pageStr += "<span><a href='javascript:void(0)' rel='1'>首页</a></span><span><a href='javascript:void(0)' rel='"+(curPage-1)+"'>上一页</a></span>";
+        }
+
+        //如果是最后页
+        if(curPage>=totalPage){
+            pageStr += "<span>下一页</span><span>尾页</span>";
+        }else{
+            pageStr += "<span><a href='javascript:void(0)' rel='"+(parseInt(curPage)+1)+"'>下一页</a></span><span><a href='javascript:void(0)' rel='"+totalPage+"'>尾页</a></span>";
+        }
+
+        $("#pagecount").html(pageStr);
+    }
+
+    //当页面第一次加载时，我们加载第一页数据即getData(1)
+    $(function(){
+        getData(1);
+    });
+    //点击查询和页码时需要获取表单数据
+    function getFormData(){
+        key = $("#key").val();
+        var arr = new Array();
+        $('input[name="country[]"]:checked').each(function(){
+            arr.push($(this).val());
+        });
+        vals = arr.join("','");
+        return [key,vals];
+    }
+
+    $('#chaxun').click(function(){
+        getData(1);
+    })
+
+</script>
+</html>
