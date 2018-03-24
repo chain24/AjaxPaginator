@@ -6,10 +6,11 @@
  * Time: 15:07
  */
 $page = isset($_POST['page']) ? $_POST['page'] : 1;//传过来的页码
-//$key = isset($_POST['key']) ? $_POST['key']:'';//查询关键字
-//$country = isset($_POST['country']) ? $_POST['country']:'';//国家字符串
+//form 表单数组形式
 $formData = isset($_POST['formData']) ? $_POST['formData'] :'';
+//request 搜索关键字
 $key = $formData[0];
+//request checkbox 以‘，’分割的字符串
 $country = $formData[1];
 $pageSize = 5;//每页显示的数目
 $offsize = ($page -1 ) * $pageSize;
